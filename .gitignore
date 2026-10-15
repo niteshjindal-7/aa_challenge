@@ -1,0 +1,17 @@
+# Docs — PDFs, reference books, personal notes
+docs/
+
+# Ground truth data (real Snowflake member data — never commit)
+**/ground_truth/
+
+# Environment
+.env
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.DS_Store
+dist/
+build/
+.pytest_cache/
+*.ipynb_checkpoints/
