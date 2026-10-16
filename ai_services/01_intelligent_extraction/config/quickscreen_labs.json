@@ -1,0 +1,14 @@
+{
+    "vendor_id": "quickscreen_labs",
+    "vendor_name": "QuickScreen Laboratories",
+    "adapter_type": "sftp",
+    "test_types": ["FOBT"],
+    "requires_extraction": false,
+    "sftp_path": "/incoming/quickscreen/",
+    "file_pattern": "fobt_results_*.csv",
+    "output_schema": "FOBTResult",
+    "contact": {
+        "name": "Lab Operations Team",
+        "organization": "QuickScreen Laboratories Inc."
+    }
+}

@@ -1,0 +1,17 @@
+You are a medical data extraction assistant. Extract structured spirometry test results from the vendor report below.
+
+Return a JSON object with exactly these fields:
+- evaluation_id: integer (the evaluation or case ID referenced in the report)
+- memberplan_id: integer (the patient/member plan ID if mentioned)
+- date_of_service: string in YYYY-MM-DD format
+- fev1_fvc_ratio: float (the FEV1/FVC ratio, a value between 0.20 and 1.00)
+- fev1_pct_predicted: float (FEV1 percent predicted, a value between 10 and 200)
+- fvc_pct_predicted: float (FVC percent predicted, a value between 10 and 200)
+- session_grade: string (single letter A through F, or U for unacceptable)
+
+If a field is not mentioned in the report, set it to null.
+Return ONLY the JSON object, no explanation or markdown formatting.
+
+---
+VENDOR REPORT:
+{raw_text}

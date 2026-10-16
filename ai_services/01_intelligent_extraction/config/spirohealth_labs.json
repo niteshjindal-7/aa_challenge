@@ -1,0 +1,15 @@
+{
+    "vendor_id": "spirohealth_labs",
+    "vendor_name": "SpiroHealth Laboratories",
+    "adapter_type": "email",
+    "test_types": ["SPIROMETRY"],
+    "requires_extraction": true,
+    "email_sender_pattern": "results@spirohealthlabs.com",
+    "prompt_template_file": "prompts/spirometry_extraction.txt",
+    "output_schema": "SpirometryResult",
+    "contact": {
+        "name": "Dr. Jennifer Walsh, MD",
+        "title": "Chief Pulmonologist",
+        "organization": "SpiroHealth Laboratories Inc."
+    }
+}
