@@ -5,7 +5,7 @@
     "test_types": ["FOBT"],
     "requires_extraction": false,
     "sftp_path": "/incoming/quickscreen/",
-    "file_pattern": "fobt_results_*.csv",
+    "file_pattern": "quickscreen_labs_fobt_*.csv",
     "output_schema": "FOBTResult",
     "contact": {
         "name": "Lab Operations Team",

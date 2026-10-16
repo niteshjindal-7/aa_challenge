@@ -200,7 +200,7 @@ Eval: {eval_id} | Member: {mp_id} | Date: {dos}
 
 """
         if ratio is not None:
-            body += f"FEV1/FVC: {ratio}\n"
+            body += f"FEV1/FVC: {ratio:.2f}\n"
         if fev1_pct is not None:
             body += f"FEV1%Pred: {fev1_pct:.0f}\n"
         if fvc_pct is not None:
@@ -389,7 +389,7 @@ def main():
     print(f"SPIROMETRY: {len(spiro_email_evals)} email+PDF reports generated")
 
     # 5% as SFTP CSV batch file
-    spiro_csv_path = OUTPUT_CSV_DIR / "spirohealth_batch_results.csv"
+    spiro_csv_path = OUTPUT_CSV_DIR / "spirohealth_labs_spirometry_batch_001.csv"
     with open(spiro_csv_path, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow([
@@ -415,9 +415,9 @@ def main():
     random.shuffle(fobt_evals)
     chunk_size = len(fobt_evals) // 3
     fobt_chunks = [
-        ("fobt_batch_001.csv", fobt_evals[:chunk_size], FOBT_CSV_FORMATS[0]),
-        ("fobt_batch_002.csv", fobt_evals[chunk_size:chunk_size*2], FOBT_CSV_FORMATS[1]),
-        ("fobt_batch_003.csv", fobt_evals[chunk_size*2:], FOBT_CSV_FORMATS[2]),
+        ("quickscreen_labs_fobt_batch_001.csv", fobt_evals[:chunk_size], FOBT_CSV_FORMATS[0]),
+        ("quickscreen_labs_fobt_batch_002.csv", fobt_evals[chunk_size:chunk_size*2], FOBT_CSV_FORMATS[1]),
+        ("quickscreen_labs_fobt_batch_003.csv", fobt_evals[chunk_size*2:], FOBT_CSV_FORMATS[2]),
     ]
 
     total_fobt = 0

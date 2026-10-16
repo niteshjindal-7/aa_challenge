@@ -4,6 +4,9 @@ docs/
 # Ground truth data (real Snowflake member data — never commit)
 **/ground_truth/
 
+# Generated mock vendor data (regenerable from ground truth)
+**/mock_vendors/
+
 # Environment
 .env
 .venv/
