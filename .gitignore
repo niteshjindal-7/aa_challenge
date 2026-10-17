@@ -7,6 +7,9 @@ docs/
 # Generated mock vendor data (regenerable from ground truth)
 **/mock_vendors/
 
+# Test result logs (generated per run)
+**/test_results/
+
 # Environment
 .env
 .venv/

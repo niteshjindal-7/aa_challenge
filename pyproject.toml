@@ -30,6 +30,19 @@ dependencies = [
 
     # HTTP (for REST adapter simulation)
     "httpx>=0.27.0",
+
+    # MongoDB
+    "pymongo>=4.7.0",
+
+    # Redis
+    "redis>=5.0.0",
+
+    # Kafka
+    "confluent-kafka>=2.4.0",
+
+    # API framework (for FastAPI service later)
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.29.0",
 ]
 
 [project.optional-dependencies]
