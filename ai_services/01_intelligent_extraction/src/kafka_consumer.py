@@ -43,6 +43,8 @@ pipeline = importlib.import_module(
     "ai_services.01_intelligent_extraction.src.extraction_pipeline"
 )
 config_mod = importlib.import_module("ai_services.common.config")
+redis_client = importlib.import_module("ai_services.common.redis_client")
+retry_mod = importlib.import_module("ai_services.common.retry")
 
 
 def process_message(msg_value: dict, result_producer: Producer) -> dict:
@@ -55,16 +57,37 @@ def process_message(msg_value: dict, result_producer: Producer) -> dict:
     logger.info("Processing: vendor=%s, type=%s, file=%s",
                 vendor_id, file_type, Path(file_path).name)
 
+    content_hash = None
+
+    # ── Redis dedup check (for email/PDF — hash the file content) ──
+    if file_type == "email":
+        try:
+            content = Path(file_path).read_text(encoding="utf-8", errors="replace")
+            content_hash = redis_client.compute_content_hash(content)
+            cached = redis_client.get_cached_result(content_hash)
+            if cached:
+                logger.info("  CACHE HIT — skipping extraction for %s", Path(file_path).name)
+                return {"file": Path(file_path).name, "verified": 1, "failed": 0,
+                        "latency": 0, "cache_hit": True}
+        except Exception:
+            content_hash = None
+
     start = time.time()
 
-    if file_type == "email":
-        outcome = pipeline.extract_from_email(file_path, vendor_id, pdf_path)
-        outcomes = [outcome]
-    elif file_type == "csv":
-        outcomes = pipeline.extract_from_csv(file_path, vendor_id)
-    else:
-        logger.error("Unknown file_type: %s", file_type)
-        return {"status": "ERROR", "reason": f"Unknown file_type: {file_type}"}
+    try:
+        if file_type == "email":
+            outcome = pipeline.extract_from_email(file_path, vendor_id, pdf_path)
+            outcomes = [outcome]
+        elif file_type == "csv":
+            outcomes = pipeline.extract_from_csv(file_path, vendor_id)
+        else:
+            logger.error("Unknown file_type: %s", file_type)
+            return {"status": "ERROR", "reason": f"Unknown file_type: {file_type}"}
+    except Exception as e:
+        # All retries exhausted or circuit breaker open — dead letter
+        retry_mod.log_dead_letter(vendor_id, file_path, str(e))
+        return {"file": Path(file_path).name, "verified": 0, "failed": 1,
+                "latency": time.time() - start, "error": str(e)}
 
     elapsed = time.time() - start
 
@@ -104,6 +127,10 @@ def process_message(msg_value: dict, result_producer: Producer) -> dict:
                 value=json.dumps(result_event),
             )
             verified += 1
+
+            # Cache result in Redis (for email vendors — content hash dedup)
+            if file_type == "email" and content_hash:
+                redis_client.cache_result(content_hash, result_event)
 
         if outcome.error:
             log_entry["error"] = outcome.error

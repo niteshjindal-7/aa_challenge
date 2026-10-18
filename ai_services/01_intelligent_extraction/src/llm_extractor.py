@@ -17,8 +17,17 @@ from langchain_core.messages import HumanMessage
 
 from ai_services.common.llm_config import get_llm
 from ai_services.common.config import load_prompt_template
+from ai_services.common.retry import retry_with_backoff
 
 logger = logging.getLogger(__name__)
+
+
+@retry_with_backoff(max_retries=3, base_delay=2.0)
+def _call_llm(prompt_text: str, vendor_id: str) -> str:
+    """Call the LLM with retry + circuit breaker protection."""
+    llm = get_llm(temperature=0.0)
+    response = llm.invoke([HumanMessage(content=prompt_text)])
+    return response.content.strip()
 
 
 def extract_with_llm(
@@ -37,12 +46,10 @@ def extract_with_llm(
         dict: Candidate extracted fields (unverified — Layer 3 checks these)
 
     Raises:
-        ExtractionError: If LLM returns unparseable output
+        ExtractionError: If LLM returns unparseable output after all retries
     """
     prompt_template = load_prompt_template(vendor_config, base_dir)
     prompt_text = prompt_template.replace("{raw_text}", raw_text)
-
-    llm = get_llm(temperature=0.0)
 
     logger.info(
         "Calling LLM for vendor=%s, text_length=%d",
@@ -50,8 +57,7 @@ def extract_with_llm(
         len(raw_text),
     )
 
-    response = llm.invoke([HumanMessage(content=prompt_text)])
-    response_text = response.content.strip()
+    response_text = _call_llm(prompt_text, vendor_config["vendor_id"])
 
     # Strip markdown code fences if the LLM wraps its response
     if response_text.startswith("```"):
