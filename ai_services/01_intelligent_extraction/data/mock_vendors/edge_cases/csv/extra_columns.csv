@@ -1,0 +1,3 @@
+evaluation_id,member_id,test_date,fobt_result,technician_name,lab_notes,batch_id
+88880020,999000020,2026-04-01,Negative,Maria Santos,Normal processing,BATCH-2026-041
+88880021,999000021,2026-04-01,Positive,James Lee,Urgent follow-up needed,BATCH-2026-041

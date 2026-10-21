@@ -1,11 +1,11 @@
 # Docs — PDFs, reference books, personal notes
 docs/
 
-# Ground truth data (real Snowflake member data — never commit)
-**/ground_truth/
-
-# Generated mock vendor data (regenerable from ground truth)
-**/mock_vendors/
+# Ground truth data — ONLY the raw real Snowflake export is git-ignored.
+# The de-identified fixture (ancillary_results_1000_deidentified.csv) and the
+# SQL query are intentionally NOT ignored — they're safe to commit (synthetic
+# MEMBERPLANID/EVALUATIONID tokens, see src/deidentify_ground_truth.py).
+ai_services/01_intelligent_extraction/data/ground_truth/ancillary_results_1000.csv
 
 # Test result logs (generated per run)
 **/test_results/

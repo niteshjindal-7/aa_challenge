@@ -6,6 +6,9 @@ Vendors:
   spirohealth_labs    → SPIROMETRY → 95% email+PDF, 5% CSV batch
   quickscreen_labs    → FOBT       → 100% SFTP CSV
 
+Reads the de-identified ground truth fixture by default (committed to git —
+MEMBERPLANID/EVALUATIONID are synthetic tokens, see deidentify_ground_truth.py).
+
 Usage:
     python -m ai_services.01_intelligent_extraction.src.generate_mock_vendor_data
 """
@@ -19,7 +22,7 @@ from fpdf import FPDF
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-GROUND_TRUTH_CSV = BASE_DIR / "data" / "ground_truth" / "ancillary_results_1000.csv"
+GROUND_TRUTH_CSV = BASE_DIR / "data" / "ground_truth" / "ancillary_results_1000_deidentified.csv"
 OUTPUT_EMAIL_DIR = BASE_DIR / "data" / "mock_vendors" / "email"
 OUTPUT_PDF_DIR = BASE_DIR / "data" / "mock_vendors" / "pdf"
 OUTPUT_CSV_DIR = BASE_DIR / "data" / "mock_vendors" / "sftp_csv"

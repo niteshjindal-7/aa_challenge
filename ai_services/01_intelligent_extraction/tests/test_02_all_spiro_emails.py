@@ -30,7 +30,7 @@ pipeline = importlib.import_module(
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-GROUND_TRUTH_CSV = BASE_DIR / "data" / "ground_truth" / "ancillary_results_1000.csv"
+GROUND_TRUTH_CSV = BASE_DIR / "data" / "ground_truth" / "ancillary_results_1000_deidentified.csv"
 EMAIL_DIR = BASE_DIR / "data" / "mock_vendors" / "email"
 PDF_DIR = BASE_DIR / "data" / "mock_vendors" / "pdf"
 RESULTS_DIR = Path(__file__).parent / "test_results"

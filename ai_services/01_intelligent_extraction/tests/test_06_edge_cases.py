@@ -218,7 +218,7 @@ def main():
 
     results.append(("duplicate_eval.eml", test_email_edge(
         "duplicate_eval.eml",
-        "Same eval ID as real data (19294621) but different values — tests idempotency awareness",
+        "Same eval ID as test_01's ground truth record (800017) but different values — tests idempotency awareness",
         ["VERIFIED", "FLAGGED"],
     )))
 

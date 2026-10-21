@@ -26,18 +26,19 @@ pipeline = importlib.import_module(
     "ai_services.01_intelligent_extraction.src.extraction_pipeline"
 )
 
-# Ground truth for eval 19294621 (from Snowflake)
+# Ground truth for eval 800017 (de-identified token; originally eval 19294621
+# in the real Snowflake export — see deidentify_ground_truth.py)
 EXPECTED = {
-    "evaluation_id": 19294621,
-    "memberplan_id": 265328294,
+    "evaluation_id": 800017,
+    "memberplan_id": 900456,
     "fev1_fvc_ratio": 0.82,
     "fev1_pct_predicted": 59.0,
     "fvc_pct_predicted": 60.0,
     "session_grade": "F",
 }
 
-EMAIL_PATH = "ai_services/01_intelligent_extraction/data/mock_vendors/email/spiro_eval_19294621.eml"
-PDF_PATH = "ai_services/01_intelligent_extraction/data/mock_vendors/pdf/spiro_eval_19294621.pdf"
+EMAIL_PATH = "ai_services/01_intelligent_extraction/data/mock_vendors/email/spiro_eval_800017.eml"
+PDF_PATH = "ai_services/01_intelligent_extraction/data/mock_vendors/pdf/spiro_eval_800017.pdf"
 
 RESULTS_DIR = Path(__file__).parent / "test_results"
 
